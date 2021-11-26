@@ -16,7 +16,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Database=AnkhMorporkGameDB;Trusted_Connection=True;"); //.\SQLEXPRESS UA02638
+            optionsBuilder.UseSqlServer(@"Data Source=UA02638;Database=AnkhMorporkGameDB;Trusted_Connection=True;"); //.\SQLEXPRESS UA02638
         }
     }
 }

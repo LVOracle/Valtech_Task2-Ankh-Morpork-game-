@@ -14,8 +14,8 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             Money = 100m;
             IsKilled = false;
         }
-        public static string _answer = string.Empty;
-        public static string ReturnAnswer()
+        public string _answer = string.Empty;
+        public string ReturnAnswer()
         {
             string answer;
             while (true)
@@ -31,6 +31,14 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             if (Money <= 0)
                 return false;
             return true;
+        }
+        public void GetMoney(decimal num)
+        {
+            Money += num;
+        }
+        public void LooseMoney(decimal num)
+        {
+            Money -= num;
         }
         public override string ToString() { return Name; }
     }

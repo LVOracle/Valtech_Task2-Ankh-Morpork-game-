@@ -36,7 +36,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 int guildRandom;
                 do
                 {
-                    guildRandom = RandomGenerate.GetRandom(0,5);
+                    guildRandom = RandomGenerate.GetRandom(0,1);
                 }while (ThievesGuild.TheftLimit == 0 && guildRandom == 3);
                 switch (guildRandom)
                 {

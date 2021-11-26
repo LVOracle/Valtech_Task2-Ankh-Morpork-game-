@@ -26,7 +26,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
             else
             {
                 DisplayDifferentTextColor.DisplayGreenColorText($"You earn {fool.TakeMoney} dollars!");
-                Player.Money += fool.TakeMoney;
+                Player.GetMoney(fool.TakeMoney);
             }
         }
         public override string ToString() { return $"Guild: {Name} Slogan: {Slogan}"; }

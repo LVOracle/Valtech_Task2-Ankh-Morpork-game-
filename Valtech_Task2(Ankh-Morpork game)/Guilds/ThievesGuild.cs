@@ -17,7 +17,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
         public override void Action(Player Player)
         {
             --ThievesGuild.TheftLimit;
-            Player.Money = Player.Money - ThievesGuild.Pay;
+            Player.LooseMoney(ThievesGuild.Pay);
             DisplayDifferentTextColor.DisplayBlueColorText("You met a thief and 10 dollars were stolen from you! You agree?(yes/skip): ");
             Player._answer = Player.ReturnAnswer();
             if (Player._answer.Equals("skip"))
