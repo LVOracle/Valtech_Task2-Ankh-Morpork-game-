@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
-using Valtech_Task2_Ankh_Morpork_game_.Data.Repository;
 
 namespace Valtech_Task2_Ankh_Morpork_game_
 {

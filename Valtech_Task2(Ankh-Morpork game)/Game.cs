@@ -11,14 +11,16 @@ namespace Valtech_Task2_Ankh_Morpork_game_
 {
     public class Game
     {
-        public int Steps { get; set; } = 1;
-        public string Name { get; } = "Ankh Morpork Game";
+        public int Steps { get; private set; } = 1;
+        public string Name { get; private set; } = "Ankh Morpork Game";
         private Player Player { get; set; }
 
-        private Random generateRandom = new();
+        private Random _generateRandom = new();
+
         private AnkhMorporkGameContext _context;
+
         private Repository _repository;
-        private string _answer = string.Empty;
+
         public Game(AnkhMorporkGameContext context)
         {
             this._context = context;
@@ -33,7 +35,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 int guildRandom;
                 do
                 {
-                    guildRandom = generateRandom.Next(0,5);
+                    guildRandom = _generateRandom.Next(0,5);
                 }while (ThievesGuild.TheftLimit == 0 && guildRandom == 3);
                 switch (guildRandom)
                 {
@@ -53,7 +55,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                         FoolsAction();
                         break;
                 }
-                if (!CheckMoneyBalance())
+                if (!Player.CheckMoneyBalance())
                 {
                     DisplayDifferentTextColor.DisplayRedColorText("Your pockets are empty! You loose! Game over!");
                     Player.IsKilled = true; 
@@ -64,7 +66,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                     break;
                 }
                 ++Steps;
-                _answer = string.Empty;
+                Player._answer = string.Empty;
                 Thread.Sleep(2500);
             }
         }
@@ -73,8 +75,8 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             DisplayDifferentTextColor.DisplayBlueColorText("Some one want to kill you! You have two options: Take(yes) contract 15$ cost or skip and die for free!");
             Console.WriteLine();
             Console.Write("Enter your answer: ");
-            _answer = ReturnAnswer();
-            if (_answer.Equals("skip"))
+            Player._answer = Player.ReturnAnswer();
+            if (Player._answer.Equals("skip"))
             {
                 Player.IsKilled = true;
                 DisplayDifferentTextColor.DisplayRedColorText("You was killed, coz assassin need money! Game over!");
@@ -82,9 +84,9 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             else
             {
                 DisplayDifferentTextColor.DisplayBlueColorText("You must choose a assassin from the list:\n");
-                foreach (var assassin in _repository.GetAssassinsEnumerable)
+                for (int i = 0; i < _repository.GetAssassinsEnumerable.Count(); ++i)
                 {
-                    Console.WriteLine(assassin.ToString());
+                    Console.WriteLine("("+(i+1)+")"+_repository.GetAssassinsEnumerable.ElementAt(i).Name);
                 }
                 DisplayDifferentTextColor.DisplayBlueColorText("Write the number of a certain assassin: ");
                 bool check = false;
@@ -97,11 +99,11 @@ namespace Valtech_Task2_Ankh_Morpork_game_
         }
         private void BeggarsAction()
         {
-            var number = generateRandom.Next(1, _repository.GetBeggarsEnumerable.Count() + 1);
+            var number = _generateRandom.Next(1, _repository.GetBeggarsEnumerable.Count() + 1);
             var beggar = _repository.GetBeggarsEnumerable.FirstOrDefault(p => p.Id == number);
             DisplayDifferentTextColor.DisplayBlueColorText($"You met a beggar by name {beggar.Name} you must give him {beggar.GiveMoney} dollars!\nDo it(yes) or die(skip): ");
-            _answer = ReturnAnswer();
-            if (_answer.Equals("skip"))
+            Player._answer = Player.ReturnAnswer();
+            if (Player._answer.Equals("skip"))
             {
                 Player.IsKilled = true;
                 DisplayDifferentTextColor.DisplayRedColorText("You was killed by beggars! Game over!");
@@ -114,11 +116,11 @@ namespace Valtech_Task2_Ankh_Morpork_game_
         }
         private void FoolsAction()
         {
-            var number = generateRandom.Next(1, _repository.GetFoolsEnumerable.Count() + 1);
+            var number = _generateRandom.Next(1, _repository.GetFoolsEnumerable.Count() + 1);
             var fool = _repository.GetFoolsEnumerable.FirstOrDefault(p => p.Id == number);
             DisplayDifferentTextColor.DisplayBlueColorText($"You met a fool by name {fool.Name} he gives you job to earn {fool.TakeMoney} dollars! Take it(yes) or you stupid(skip): ");
-            _answer = ReturnAnswer();
-            if (_answer.Equals("skip"))
+            Player._answer = Player.ReturnAnswer();
+            if (Player._answer.Equals("skip"))
             {
                 DisplayDifferentTextColor.DisplayRedColorText("You so stupid man! It only one way to have money in this game!");
             }
@@ -135,8 +137,8 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             --ThievesGuild.TheftLimit;
             Player.Money = Player.Money - ThievesGuild.Pay;
             DisplayDifferentTextColor.DisplayBlueColorText("You met a thief and 10 dollars were stolen from you! You agree?(yes/skip): ");
-            _answer = ReturnAnswer();
-            if (_answer.Equals("skip"))
+            Player._answer = Player.ReturnAnswer();
+            if (Player._answer.Equals("skip"))
             {
                 DisplayDifferentTextColor.DisplayRedColorText("Good luck! I don't care!");
             }
@@ -144,12 +146,6 @@ namespace Valtech_Task2_Ankh_Morpork_game_
             {
                 DisplayDifferentTextColor.DisplayRedColorText("Take care of your pockets!");
             }
-        }
-        private bool CheckMoneyBalance()
-        {
-            if (Player.Money <= 0)
-                return false;
-            return true;
         }
         private bool CheckAssassinContract()
         {
@@ -160,30 +156,24 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 while (number.Length != 1)
                 {
                     number = Console.ReadLine();
-                    if(number.Length != 1)
-                    DisplayDifferentTextColor.DisplayRedColorText("\aInput assassin from 1-4: ");
-                } 
-                switch (Convert.ToInt32(number))
+                    if(number != null && number.Length != 1)
+                        DisplayDifferentTextColor.DisplayRedColorText($"\aInput assassin from 1-{_repository.GetAssassinsEnumerable.Count()}: ");
+                }
+
+                if (Convert.ToInt32(number) <= 0 ||
+                    Convert.ToInt32(number) > _repository.GetAssassinsEnumerable.Count())
+                    checkNumber = false;
+                else
                 {
-                    case 1:
-                        return CheckAssassinOccupied(_repository.GetAssassinsEnumerable.ElementAt(0));
-                    case 2:
-                        return CheckAssassinOccupied(_repository.GetAssassinsEnumerable.ElementAt(1));
-                    case 3:
-                        return CheckAssassinOccupied(_repository.GetAssassinsEnumerable.ElementAt(2));
-                    case 4:
-                        return CheckAssassinOccupied(_repository.GetAssassinsEnumerable.ElementAt(3));
-                    default:
-                        DisplayDifferentTextColor.DisplayRedColorText("\aInput assassin from 1-4: ");
-                        checkNumber = false;
-                        break;
+                    Assassins assassin = (Assassins)_repository.GetAssassinsEnumerable.FirstOrDefault(p => p.Id == Convert.ToInt32(number));
+                    return CheckAssassinOccupied(assassin);
                 }
             }
             return false;
         }
         private bool CheckAssassinOccupied(Assassins a)
         {
-            if (a.IsOccupied == true)
+            if (a.IsOccupied == true && a.MinRange < 15)
             {
                 DisplayDifferentTextColor.DisplayGreenColorText($"{a.Name} is free!");
                 return true;
@@ -193,17 +183,6 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 DisplayDifferentTextColor.DisplayRedColorText($"{a.Name} is occupied! Choose another assassin: ");
                 return false;
             }
-        }
-        private string ReturnAnswer()
-        {
-            string answer;
-            while (true)
-            {
-                answer = Console.ReadLine()?.ToLower();
-                if (answer != null && (answer.Equals("yes") || answer.Equals("skip"))) break;
-                else DisplayDifferentTextColor.DisplayRedColorText("\aError! Write only \'yes\' or \'skip\'!");
-            }
-            return answer;
         }
         private void RegisterPlayer()
         {
