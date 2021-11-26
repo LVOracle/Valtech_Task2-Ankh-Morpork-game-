@@ -10,5 +10,6 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
             Name = name;
             Slogan = slogan;
         }
+        public abstract void Action(Player Player);
     }
 }

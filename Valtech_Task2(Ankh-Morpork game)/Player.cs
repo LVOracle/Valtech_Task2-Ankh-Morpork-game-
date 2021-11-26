@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Valtech_Task2_Ankh_Morpork_game_.Service;
 
 namespace Valtech_Task2_Ankh_Morpork_game_

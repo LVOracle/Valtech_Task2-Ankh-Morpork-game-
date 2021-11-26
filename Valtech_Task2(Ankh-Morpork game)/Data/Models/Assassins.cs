@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Valtech_Task2_Ankh_Morpork_game_.Guilds.GuildMembers
 {
     public class Assassins 

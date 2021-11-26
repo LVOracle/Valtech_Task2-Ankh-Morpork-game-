@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
 
 namespace Valtech_Task2_Ankh_Morpork_game_
@@ -9,8 +10,14 @@ namespace Valtech_Task2_Ankh_Morpork_game_
         {
             var oBuilder = new DbContextOptions<AnkhMorporkGameContext>();
             var instance = new AnkhMorporkGameContext(oBuilder);
-            DbSeedData.SeedData(instance);
-
+            try
+            {
+                DbSeedData.SeedData(instance);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             Game game = new(instance);
             game.LaunchGame();
         }
