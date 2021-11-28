@@ -36,7 +36,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 int guildRandom;
                 do
                 {
-                    guildRandom = RandomGenerate.GetRandom(0,1);
+                    guildRandom = RandomGenerate.GetRandom(0,5);
                 }while (ThievesGuild.TheftLimit == 0 && guildRandom == 3);
                 switch (guildRandom)
                 {
@@ -68,13 +68,13 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 }
                 ++Steps;
                 Player._answer = string.Empty;
-                Thread.Sleep(2500);
+                Thread.Sleep(3000);
             }
         }
         private void RegisterPlayer()
         {
             Console.Write("What's your name bro: ");
-            string name = Console.ReadLine();
+            var name = Console.ReadLine();
             Player = new Player(name);
         }
         private void DisplayRules()
@@ -89,7 +89,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
         {
             RegisterPlayer();
             DisplayRules();
-            Thread.Sleep(5000);
+            Thread.Sleep(7000);
             Moves();
         }
     }

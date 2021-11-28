@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
 using Valtech_Task2_Ankh_Morpork_game_.Data.Repository;
@@ -11,73 +12,45 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
     {
         private decimal Pay { get; set; }
         private readonly Repository _repository;
-        public AssassinsGuild(AnkhMorporkGameContext _context) : base("Assassin",
+        public AssassinsGuild(AnkhMorporkGameContext context) : base("Assassin",
             "NIL VOLVPTI, SINE LVCRE (No Pay No Fun)")
         {
-            this._repository = new(_context);
+            this._repository = new(context);
         }
-        public override void Action(Player Player)
+        public override void Action(Player player)
         {
-            DisplayDifferentTextColor.DisplayBlueColorText("Some one want to kill you! You have two options: Take(yes) contract 15$ cost or skip and die for free!");
-            Console.WriteLine();
+            DisplayDifferentTextColor.DisplayBlueColorText("Some one want to kill you! You have two options: Take(yes) contract or skip and die for free!\n");
             Console.Write("Enter your answer: ");
-            Player._answer = Player.ReturnAnswer();
-            if (Player._answer.Equals("skip"))
+            player._answer = player.ReturnAnswer();
+            if (player._answer.Equals("skip"))
             {
-                Player.IsKilled = true;
+                player.IsKilled = true;
                 DisplayDifferentTextColor.DisplayRedColorText("You was killed, coz assassin need money! Game over!");
             }
             else
             {
-                DisplayDifferentTextColor.DisplayBlueColorText("You must choose a assassin from the list:\n");
-                for (int i = 0; i < _repository.GetAssassinsEnumerable.Count(); ++i)
-                {
-                    Console.WriteLine("(" + (i + 1) + ")" + _repository.GetAssassinsEnumerable.ElementAt(i).Name);
-                }
-                bool check = false;
+                var check = false;
                 while (!check)
                 {
-                    check = CheckAssassinContract(Player.Money);
+                    check = CheckAssassinContract(player.Money);
                 }
-                Player.LooseMoney(Pay);
+                player.LooseMoney(Pay);
             }
         }
         private bool CheckAssassinContract(decimal money)
         {
-            string inputPay = string.Empty;
-            string inputNumber = string.Empty;
+            var inputPay = string.Empty;
             decimal pay = 0;
-            int number = 0;
-            bool checkNumber = false;
-            DisplayDifferentTextColor.DisplayBlueColorText("Write how much money do you what to give him: ");
-            while (inputPay == String.Empty || checkNumber == false) 
+            var checkNumber = false;
+            IEnumerable<Assassins> listOfAssassinsEnumerable = new List<Assassins>();
+            DisplayDifferentTextColor.DisplayBlueColorText("Write how much money do you want to give him: ");
+            while (!listOfAssassinsEnumerable.Any())
             {
-                inputPay = Console.ReadLine();
-                checkNumber = decimal.TryParse(inputPay, out pay);
-                if (checkNumber && Convert.ToDecimal(inputPay) > 0 && Convert.ToDecimal(inputPay) < money)
-                    break;
-                else
+                while (inputPay == string.Empty || checkNumber == false)
                 {
-                    if (!checkNumber)
-                        DisplayDifferentTextColor.DisplayRedColorText("\aEnter number please: ");
-                    else
-                    {
-                        if(Convert.ToDecimal(inputPay) > money)
-                            DisplayDifferentTextColor.DisplayRedColorText($"\aYou don't have {pay} dollars, input less: ");
-                        else
-                            DisplayDifferentTextColor.DisplayRedColorText("\aEnter number more than zero: ");
-                        checkNumber = false;
-                    }
-                }
-            }
-            DisplayDifferentTextColor.DisplayBlueColorText("Write the number of a certain assassin: ");
-            while (checkNumber)
-            {
-                while (inputNumber == String.Empty || checkNumber == false)
-                {
-                    inputNumber = Console.ReadLine();
-                    checkNumber = int.TryParse(inputNumber, out number);
-                    if (checkNumber && (Convert.ToDecimal(inputNumber) > 0 && Convert.ToDecimal(inputNumber) <= _repository.GetAssassinsEnumerable.Count()))
+                    inputPay = Console.ReadLine();
+                    checkNumber = decimal.TryParse(inputPay, out pay);
+                    if (checkNumber && Convert.ToDecimal(inputPay) > 0 && Convert.ToDecimal(inputPay) < money)
                         break;
                     else
                     {
@@ -85,31 +58,44 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
                             DisplayDifferentTextColor.DisplayRedColorText("\aEnter number please: ");
                         else
                         {
-                            DisplayDifferentTextColor.DisplayRedColorText($"\aEnter number more 1-{_repository.GetAssassinsEnumerable.Count()}: ");
-                            checkNumber = false;
+                            DisplayDifferentTextColor.DisplayRedColorText(Convert.ToDecimal(inputPay) > money
+                                ? $"\aYou don't have {pay} dollars, input less: "
+                                : "\aEnter number more than zero: ");
                         }
+                        checkNumber = false;
                     }
                 }
-                Assassins assassin = _repository.GetAssassinsEnumerable.FirstOrDefault(p => p.Id == Convert.ToInt32(inputNumber));
-                    return CheckAssassinOccupied(assassin, pay);
+                listOfAssassinsEnumerable = CheckAssassinOccupied(pay);
+                if (!listOfAssassinsEnumerable.Any())
+                    checkNumber = false;
             }
-            return false;
+            Pay = pay;
+            return true;
         }
-        private bool CheckAssassinOccupied(Assassins a, decimal pay)
+        private IEnumerable<Assassins> CheckAssassinOccupied(decimal pay)
         {
-            if (a.IsOccupied == true && pay >= a.MinRange)
+            var notOccupiedAssassins = _repository.GetAssassinsEnumerable.Where(assassin => assassin.IsOccupied == false && (assassin.MinRange <= pay && pay <= assassin.MaxRange));
+            var checkAssassinOccupied = notOccupiedAssassins as Assassins[] ?? notOccupiedAssassins.ToArray();
+            for (var i = 0; i < checkAssassinOccupied.Length; ++i)
             {
-                DisplayDifferentTextColor.DisplayGreenColorText($"{a.Name} is free!");
-                Pay = pay;
-                return true;
+                if(i == checkAssassinOccupied.Length - 1)
+                    Console.Write(checkAssassinOccupied[i].Name);
+                else
+                    Console.Write(checkAssassinOccupied[i].Name + ", ");
             }
-            else
+            switch (checkAssassinOccupied.Length)
             {
-                DisplayDifferentTextColor.DisplayRedColorText(!a.IsOccupied
-                    ? $"{a.Name} is occupied! Choose another assassin!\n"
-                    : $"{a.Name} need more money to write a contract with you!\n");
-                return false;
+                case 1:
+                    Console.WriteLine(" is free.");
+                    break;
+                case > 1:
+                    Console.WriteLine(" are free. You take first one from the list");
+                    break;
+                default:
+                    DisplayDifferentTextColor.DisplayRedColorText("\aAll assassins are occupied! Enter another amount of money: ");
+                    break;
             }
+            return checkAssassinOccupied;
         }
         public override string ToString() { return $"Guild: {Name} Slogan: {Slogan}"; }
     }

@@ -16,9 +16,8 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 new Assassins { Name = "Axe", MinRange = 15, MaxRange = 19, IsOccupied = true},
                 new Assassins { Name = "Gun", MinRange = 4, MaxRange = 12, IsOccupied = true},
                 new Assassins { Name = "Ranger", MinRange = 29, MaxRange = 45, IsOccupied = false},
-                new Assassins { Name = "Dodick", MinRange = 15, MaxRange = 22, IsOccupied = true},
-                new Assassins { Name = "RedBorsh", MinRange = 18, MaxRange = 27, IsOccupied = false}
-
+                new Assassins { Name = "Dodick", MinRange = 15, MaxRange = 22, IsOccupied = false},
+                new Assassins { Name = "RedBorsh", MinRange = 18, MaxRange = 27, IsOccupied = true}
             });
 
             context.Beggars.AddRange(new List<Beggars>
@@ -34,7 +33,6 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 new Beggars { Name = "People Who Need Eightpence For A Meal", GiveMoney = 0.08m},
                 new Beggars { Name = "People Who Need Tuppence For A Cup Of Tea", GiveMoney = 0.02m},
                 new Beggars { Name = "People With Placards Saying \"Why lie? I need a beer.\"", GiveMoney = 0},
-
             });
 
             context.Fools.AddRange(new List<Fools>
