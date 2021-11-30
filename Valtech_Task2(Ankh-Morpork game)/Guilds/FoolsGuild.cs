@@ -13,7 +13,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
             _repository = new(context);
 
         }
-        public override void Action(Player Player)
+        public override void Action(Player Player, AnkhMorporkGameContext context)
         {
             var number = RandomGenerate.GetRandom(1, _repository.GetFoolsEnumerable.Count() + 1);
             var fool = _repository.GetFoolsEnumerable.FirstOrDefault(p => p.Id == number);

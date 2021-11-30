@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
 using Valtech_Task2_Ankh_Morpork_game_.Guilds;
@@ -11,21 +12,12 @@ namespace Valtech_Task2_Ankh_Morpork_game_
         public int Steps { get; private set; } = 1;
         public string Name { get; private set; } = "Ankh Morpork Game";
         private Player Player { get; set; }
-
-        private readonly AssassinsGuild _assassinsGuild;
-
-        private readonly BeggarsGuild _beggarsGuild;
-
-        private readonly FoolsGuild _foolsGuild;
-
-        private readonly ThievesGuild _thievesGuild;
-
+        private int Length { get; set; }
+        private AnkhMorporkGameContext Context { get; }
         public Game(AnkhMorporkGameContext context)
         {
-            _assassinsGuild = new(context);
-            _beggarsGuild = new(context);
-            _foolsGuild = new(context);
-            _thievesGuild = new(context);
+            Context = context;
+            Length = Guilds.Guilds.GetAllGuilds(context).Length;
         }
         private void Moves()
         {
@@ -36,26 +28,12 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 int guildRandom;
                 do
                 {
-                    guildRandom = RandomGenerate.GetRandom(0,5);
+                    guildRandom = RandomGenerate.GetRandom(0,Length);
                 }while (ThievesGuild.TheftLimit == 0 && guildRandom == 3);
-                switch (guildRandom)
-                {
-                    case 0:
-                        _assassinsGuild.Action(Player);
-                        break;
-                    case 1:
-                        _beggarsGuild.Action(Player);
-                        break;
-                    case 2:
-                        _foolsGuild.Action(Player);
-                        break;
-                    case 3:
-                        _thievesGuild.Action(Player);
-                        break;
-                    case 4:
-                        _foolsGuild.Action(Player);
-                        break;
-                }
+
+                var someGuild = Guilds.Guilds.GetAllGuilds(Context).ElementAt(guildRandom);
+                someGuild.Action(Player, Context);
+
                 if (!Player.CheckMoneyBalance())
                 {
                     DisplayDifferentTextColor.DisplayRedColorText("Your pockets are empty! You loose! Game over!");

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valtech_Task2(Ankh-Morpork game)", "Valtech_Task2(Ankh-Morpork game)\Valtech_Task2(Ankh-Morpork game).csproj", "{18A186AA-4B69-473B-84C5-19BEA4897AD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valtech_Ankh-MorporkGame.UnitTest", "Valtech_Ankh-MorporkGame.UnitTest\Valtech_Ankh-MorporkGame.UnitTest.csproj", "{E2D85A25-7028-411F-BB85-6DDCD4F47BA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valtech_Ankh-MorporkGame.UnitTest", "Valtech_Ankh-MorporkGame.UnitTest\Valtech_Ankh-MorporkGame.UnitTest.csproj", "{E2D85A25-7028-411F-BB85-6DDCD4F47BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

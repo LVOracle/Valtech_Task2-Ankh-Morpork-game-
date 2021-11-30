@@ -17,9 +17,9 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
         {
             this._repository = new(context);
         }
-        public override void Action(Player player)
+        public override void Action(Player player, AnkhMorporkGameContext context)
         {
-            DisplayDifferentTextColor.DisplayBlueColorText("Some one want to kill you! You have two options: Take(yes) contract or skip and die for free!\n");
+            DisplayDifferentTextColor.DisplayBlueColorText("Someone wants to kill you! You have two options: Take(yes) contract or skip and die for free!\n");
             Console.Write("Enter your answer: ");
             player._answer = player.ReturnAnswer();
             if (player._answer.Equals("skip"))
@@ -32,12 +32,12 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
                 var check = false;
                 while (!check)
                 {
-                    check = CheckAssassinContract(player.Money);
+                    check = CheckAssassinContract(player.Money, context);
                 }
                 player.LooseMoney(Pay);
             }
         }
-        private bool CheckAssassinContract(decimal money)
+        private bool CheckAssassinContract(decimal money, AnkhMorporkGameContext context)
         {
             var inputPay = string.Empty;
             decimal pay = 0;
@@ -65,14 +65,14 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
                         checkNumber = false;
                     }
                 }
-                listOfAssassinsEnumerable = CheckAssassinOccupied(pay);
+                listOfAssassinsEnumerable = CheckAssassinOccupied(pay,context);
                 if (!listOfAssassinsEnumerable.Any())
                     checkNumber = false;
             }
             Pay = pay;
             return true;
         }
-        private IEnumerable<Assassins> CheckAssassinOccupied(decimal pay)
+        private IEnumerable<Assassins> CheckAssassinOccupied(decimal pay, AnkhMorporkGameContext context)
         {
             var notOccupiedAssassins = _repository.GetAssassinsEnumerable.Where(assassin => assassin.IsOccupied == false && (assassin.MinRange <= pay && pay <= assassin.MaxRange));
             var checkAssassinOccupied = notOccupiedAssassins as Assassins[] ?? notOccupiedAssassins.ToArray();

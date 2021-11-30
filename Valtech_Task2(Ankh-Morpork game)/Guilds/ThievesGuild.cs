@@ -14,20 +14,15 @@ namespace Valtech_Task2_Ankh_Morpork_game_.Guilds
         {
             _repository = new(context);
         }
-        public override void Action(Player Player)
+        public override void Action(Player Player, AnkhMorporkGameContext context)
         {
             --ThievesGuild.TheftLimit;
             Player.LooseMoney(ThievesGuild.Pay);
             DisplayDifferentTextColor.DisplayBlueColorText("You met a thief and 10 dollars were stolen from you! You agree?(yes/skip): ");
             Player._answer = Player.ReturnAnswer();
-            if (Player._answer.Equals("skip"))
-            {
-                DisplayDifferentTextColor.DisplayRedColorText("Good luck! I don't care!");
-            }
-            else
-            {
-                DisplayDifferentTextColor.DisplayRedColorText("Take care of your pockets!");
-            }
+            DisplayDifferentTextColor.DisplayRedColorText(Player._answer.Equals("skip")
+                ? "Good luck! I don't care!"
+                : "Take care of your pockets!");
         }
         public override string ToString() { return $"Guild: {Name} Slogan: {Slogan}"; }
     }
