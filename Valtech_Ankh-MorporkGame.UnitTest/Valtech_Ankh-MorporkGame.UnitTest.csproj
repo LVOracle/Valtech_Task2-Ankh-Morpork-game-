@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnkhMorpork\AnkhMorpork.csproj" />
     <ProjectReference Include="..\Valtech_Task2(Ankh-Morpork game)\Valtech_Task2(Ankh-Morpork game).csproj" />
   </ItemGroup>
 
