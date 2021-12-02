@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Valtech_Task2_Ankh_Morpork_game_;
 
-namespace AnkhMorpork.Controllers
+namespace AnkhMorpork.Controllers.Account
 {
     public class AccountController : Controller
     {
@@ -13,8 +13,8 @@ namespace AnkhMorpork.Controllers
 
         public AccountController(UserManager<Player> playerManager, SignInManager<Player> signInManager)
         {
-            _playerManager = playerManager;
-            _signInManager = signInManager;
+            this._playerManager = playerManager;
+            this._signInManager = signInManager;
         }
 
         [HttpGet]

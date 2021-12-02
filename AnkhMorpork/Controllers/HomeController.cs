@@ -13,8 +13,8 @@ namespace AnkhMorpork.Controllers
         private readonly IGeneralRepository _repository;
         public HomeController(ILogger<HomeController> logger, AnkhMorporkGameContext context, IGeneralRepository repository)
         {
-            _logger = logger;
-            _repository = repository;
+            this._logger = logger;
+            this._repository = repository;
             if(!context.Assassins.Any())
                 DbSeedData.SeedData(context);
         }
