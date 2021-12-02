@@ -1,5 +1,4 @@
-﻿
-namespace Valtech_Task2_Ankh_Morpork_game_.Guilds.GuildMembers
+﻿namespace Valtech_Task2_Ankh_Morpork_game_.Data.Models
 {
     public class Beggars
     {

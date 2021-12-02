@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
+using Valtech_Task2_Ankh_Morpork_game_.Data.Models;
 using Valtech_Task2_Ankh_Morpork_game_.Data.Repository;
-using Valtech_Task2_Ankh_Morpork_game_.Guilds.GuildMembers;
 using Valtech_Task2_Ankh_Morpork_game_.Service;
 
 namespace Valtech_Task2_Ankh_Morpork_game_.Guilds

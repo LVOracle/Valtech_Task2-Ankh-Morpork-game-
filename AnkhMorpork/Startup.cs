@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Valtech_Task2_Ankh_Morpork_game_.Data;
+using Valtech_Task2_Ankh_Morpork_game_.Data.IRepository;
+using Valtech_Task2_Ankh_Morpork_game_.Data.Repository;
 
 namespace AnkhMorpork
 {
@@ -18,6 +22,10 @@ namespace AnkhMorpork
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddTransient<IGeneralRepository, Repository>();
+
+            services.AddDbContext<AnkhMorporkGameContext>(option => option.UseSqlServer(Configuration["Data:ConnectionString"]));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

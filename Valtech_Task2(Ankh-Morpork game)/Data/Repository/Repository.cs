@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Valtech_Task2_Ankh_Morpork_game_.Data.IRepository;
-using Valtech_Task2_Ankh_Morpork_game_.Guilds.GuildMembers;
+using Valtech_Task2_Ankh_Morpork_game_.Data.Models;
 
 namespace Valtech_Task2_Ankh_Morpork_game_.Data.Repository
 {

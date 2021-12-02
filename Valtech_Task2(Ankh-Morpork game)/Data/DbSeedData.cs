@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Valtech_Task2_Ankh_Morpork_game_.Data;
-using Valtech_Task2_Ankh_Morpork_game_.Guilds.GuildMembers;
+using Valtech_Task2_Ankh_Morpork_game_.Data.Models;
 
 namespace Valtech_Task2_Ankh_Morpork_game_
 {
@@ -55,7 +55,7 @@ namespace Valtech_Task2_Ankh_Morpork_game_
                 new Thieves(){Name = "Falcon"}
             });
 
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
     }
 }
