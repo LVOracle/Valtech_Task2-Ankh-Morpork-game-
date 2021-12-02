@@ -1,0 +1,26 @@
+﻿@model AnkhMorpork.ViewModels.LoginViewModel
+
+<h2>Enter to the web site</h2>
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <div>
+        @Html.ValidationMessage("ModelOnly")
+    </div>
+    <div>
+        @Html.Label("Name")
+        @Html.TextBox("Name")
+        @Html.ValidationMessage("Name")
+    </div>
+    <div>
+        @Html.Label("Password")
+        @Html.TextBox("Password")
+        @Html.ValidationMessage("Password")
+    </div>
+    <div>
+        @Html.Label("RememberMe")
+        @Html.CheckBox("RememberMe")
+    </div>
+    <div>
+        <input type="submit" value="Login" />
+    </div>
+}

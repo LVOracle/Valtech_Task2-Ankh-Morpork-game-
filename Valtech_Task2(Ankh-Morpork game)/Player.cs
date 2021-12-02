@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
 using Valtech_Task2_Ankh_Morpork_game_.Service;
 
 namespace Valtech_Task2_Ankh_Morpork_game_
 {
-    public class Player
+    public class Player : IdentityUser
     {
         public string Name { get; set; }
         public decimal Money { get; set; }
