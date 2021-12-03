@@ -8,8 +8,7 @@ namespace AnkhMorpork.Models
     {
         public AccountContext(DbContextOptions<AccountContext> options) : base(options)
         {
-            if(!Database.EnsureCreated())
-                Database.EnsureCreated();
+            Database.EnsureCreated();
         }
     }
 }

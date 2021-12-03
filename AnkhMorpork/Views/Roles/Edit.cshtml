@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Identity 
+@model AnkhMorpork.ViewModels.ChangeRoleViewModel 
+
+<div> 
+    <h2>Edit role for user @Model.PlayerName</h2> 
+ 
+    <form asp-action="Edit" method="post"> 
+        <input type="hidden" name="userId" value="@Model.PlayerId" /> 
+        <div class="form-group"> 
+            @foreach (IdentityRole role in Model.AllRoles) 
+            { 
+                <input type="checkbox" name="roles" value="@role.Name" 
+                       @(Model.PlayerRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br /> 
+            } 
+        </div> 
+        <button type="submit" style="cursor:pointer; color:white;background-color:black;border:solid 1px white;">Save</button> 
+    </form> 
+</div> 

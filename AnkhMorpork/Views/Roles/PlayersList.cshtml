@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Valtech_Task2_Ankh_Morpork_game_.Player>
+<h2>List of all players</h2>
+<table class="table">
+    @foreach (var player in Model)
+    {
+        <tr>
+            <td>@player.Name</td>
+            <td>@player.Id</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@player.Id">Your rights</a>
+            </td>
+        </tr>
+    }
+</table>
