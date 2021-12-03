@@ -8,17 +8,17 @@
     <div>
         @Html.Label("Name")
         @Html.TextBox("Name")
-        @Html.ValidationMessage("Name")
+        @Html.ValidationMessageFor(n => n.Name)
     </div>
     <div>
         @Html.Label("Password")
-        @Html.TextBox("Password")
-        @Html.ValidationMessage("Password")
+        @Html.Password("Password")
+        @Html.ValidationMessageFor(p => p.Password)
     </div>
     <div>
         @Html.Label("PasswordConfirm")
-        @Html.TextBox("PasswordConfirm")
-        @Html.ValidationMessage("PasswordConfirm")
+        @Html.Password("PasswordConfirm")
+        @Html.ValidationMessageFor(ps => ps.PasswordConfirm)
     </div>
     <div>
         <input type="submit" value="Registration" />

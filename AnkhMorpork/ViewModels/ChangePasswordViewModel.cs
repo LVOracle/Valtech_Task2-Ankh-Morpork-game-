@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace AnkhMorpork.ViewModels
 {
-    public class CreatePlayerViewModel
+    public class ChangePasswordViewModel
     {
+        public string Id { get; set; }
         [Required]
-        [MinLength(4)]
-        [MaxLength(20)]
         [Display(Name = "Name")]
         public string Name { get; set; }
         [Required]
@@ -18,6 +17,12 @@ namespace AnkhMorpork.ViewModels
         [MinLength(5)]
         [MaxLength(20)]
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [MinLength(5)]
+        [MaxLength(20)]
+        [Display(Name = "Password")]
+        public string OldPassword { get; set; }
     }
 }

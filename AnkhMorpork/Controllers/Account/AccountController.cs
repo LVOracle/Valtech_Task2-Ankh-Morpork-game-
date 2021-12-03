@@ -28,7 +28,7 @@ namespace AnkhMorpork.Controllers.Account
         {
             if (ModelState.IsValid)
             {
-                Player player = new Player(model.Name);
+                var player = new Player(model.Name){UserName = model.Name};
 
                 var result = await _playerManager.CreateAsync(player, model.Password);
 

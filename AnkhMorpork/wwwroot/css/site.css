@@ -60,3 +60,11 @@ body {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border: 2px solid red;
+}

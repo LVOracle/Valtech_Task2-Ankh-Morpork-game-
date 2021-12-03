@@ -25,8 +25,8 @@ namespace AnkhMorpork.Controllers.Account
         {
             if (ModelState.IsValid)
             {
-                var user = new Player(model.Name);
-                var result = await _playerManager.CreateAsync(user, model.Password);
+                var player = new Player(model.Name){UserName = model.Name};
+                var result = await _playerManager.CreateAsync(player, model.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -44,12 +44,12 @@ namespace AnkhMorpork.Controllers.Account
 
         public async Task<IActionResult> Edit(string id)
         {
-            var user = await _playerManager.FindByIdAsync(id);
-            if (user == null)
+            var player = await _playerManager.FindByIdAsync(id);
+            if (player == null)
             {
                 return NotFound();
             }
-            var model = new EditPlayerViewModel { Id = user.Id, Name = user.Email };
+            var model = new EditPlayerViewModel { Id = player.Id, Name = player.Name };
             return View(model);
         }
 
@@ -58,12 +58,12 @@ namespace AnkhMorpork.Controllers.Account
         {
             if (ModelState.IsValid)
             {
-                var user = await _playerManager.FindByIdAsync(model.Id);
-                if (user != null)
+                var player = await _playerManager.FindByIdAsync(model.Id);
+                if (player != null)
                 {
-                    user.Name = model.Name;
+                    player.Name = model.Name;
 
-                    var result = await _playerManager.UpdateAsync(user);
+                    var result = await _playerManager.UpdateAsync(player);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
@@ -83,12 +83,52 @@ namespace AnkhMorpork.Controllers.Account
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            var user = await _playerManager.FindByIdAsync(id);
-            if (user != null)
+            var player = await _playerManager.FindByIdAsync(id);
+            if (player != null)
             {
-                IdentityResult result = await _playerManager.DeleteAsync(user);
+                IdentityResult result = await _playerManager.DeleteAsync(player);
             }
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> ChangePassword(string id)
+        {
+            var player = await _playerManager.FindByIdAsync(id);
+            if (player == null)
+            {
+                return NotFound();
+            }
+            ChangePasswordViewModel model = new ChangePasswordViewModel { Id = player.Id, Name = player.Name };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var player = await _playerManager.FindByIdAsync(model.Id);
+                if (player != null)
+                {
+                    IdentityResult result =
+                        await _playerManager.ChangePasswordAsync(player, model.OldPassword, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Player not found");
+                }
+            }
+            return View(model);
         }
     }
 }
